@@ -847,12 +847,12 @@ cd "$misskey_directory";
 tput setaf 3;
 echo "Process: install npm packages;"
 tput setaf 7;
-NODE_ENV=production pnpm install --frozen-lockfile;
+NODE_ENV=pnpm install --frozen-lockfile;
 
 tput setaf 3;
 echo "Process: build Sharkey;"
 tput setaf 7;
-NODE_OPTIONS=--max_old_space_size=3072 NODE_ENV=production pnpm run build;
+NODE_OPTIONS=--max_old_space_size=3072 pnpm run build;
 
 tput setaf 3;
 echo "Process: initialize database;"
