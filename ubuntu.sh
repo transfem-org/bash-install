@@ -847,7 +847,7 @@ cd "$misskey_directory";
 tput setaf 3;
 echo "Process: install npm packages;"
 tput setaf 7;
-NODE_ENV=pnpm install --frozen-lockfile;
+pnpm install --frozen-lockfile;
 
 tput setaf 3;
 echo "Process: build Sharkey;"
