@@ -1,19 +1,16 @@
-# Misskey install shell script v3.2.0
-Install Misskey with one shell script!  
+# Sharkey install shell script v3.2.0
+Install Sharkey with one shell script!  
 
-You can install misskey on an Ubuntu server just by answering some questions.  
+You can install sharkey on an Ubuntu server just by answering some questions.  
 
 There is also an update script.
-
-[For v12](https://github.com/joinmisskey/bash-install/blob/a096e874f93d493aa68975a31be9ce12d644e767/README.en.md)  
-[**日本語版はこちら**](./README.md)
 
 ## License
 [MIT License](./LICENSE)
 
 ## Ingredients
 1. A Domain
-2. An Ubuntu Server
+2. An Debian/Ubuntu Server
 3. A Cloudflare Account (recommended)
 
 ## Configure Cloudflare
@@ -35,25 +32,25 @@ sudo apt update; sudo apt full-upgrade -y; sudo reboot
 ```
 
 ### 3. Start the installation
-Reconnect SSH and let's start installing Misskey. 
+Reconnect SSH and let's start installing Sharkey. 
 
 ```
-wget https://raw.githubusercontent.com/joinmisskey/bash-install/main/ubuntu.sh -O ubuntu.sh; sudo bash ubuntu.sh
+wget https://raw.githubusercontent.com/transfem-org/bash-install/main/ubuntu.sh -O ubuntu.sh; sudo bash ubuntu.sh
 ```
 
 ### 4. To update
 There is also an update script.
 
 The update script does not update the environment.  
-Please refer to CHANGELOG (Japanese) and [GitHub release list (English)](https://github.com/joinmisskey/bash-install/releases) and perform migration operations accordingly.
+Please refer to [GitHub release list](https://github.com/transfem-org/bash-install/releases) and perform migration operations accordingly.
 
 First, download the script.
 
 ```
-wget https://raw.githubusercontent.com/joinmisskey/bash-install/main/update.ubuntu.sh -O update.sh
+wget https://raw.githubusercontent.com/transfem-org/bash-install/main/update.ubuntu.sh -O update.sh
 ```
 
-Run it when you want to update Misskey.
+Run it when you want to update Sharkey.
 
 ```
 sudo bash update.sh

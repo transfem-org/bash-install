@@ -149,7 +149,7 @@ else
 		if [ $# == 1 ]; then
 			docker_repository="$1";
 		else
-			docker_repository="misskey/misskey:latest";
+			docker_repository="ghcr.io/transfem-org/sharkey:stable";
 		fi
 
 		sudo -iu "$misskey_user" XDG_RUNTIME_DIR=/run/user/$m_uid DOCKER_HOST=unix:///run/user/$m_uid/docker.sock docker pull "$docker_repository";

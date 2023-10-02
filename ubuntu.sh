@@ -22,7 +22,7 @@ version="3.2.0";
 
 tput setaf 4;
 echo "";
-echo "Misskey auto setup for Ubuntu";
+echo "Sharkey auto setup for Ubuntu";
 echo " v$version";
 echo "";
 
@@ -85,7 +85,7 @@ tput setaf 3;
 echo "";
 echo "Install Method";
 tput setaf 7;
-echo "Do you use systemd to run Misskey?:";
+echo "Do you use systemd to run Sharkey?:";
 echo "Y = To use systemd / n = To use docker"
 read -r -p "[Y/n] > " yn
 case "$yn" in
@@ -99,7 +99,7 @@ case "$yn" in
 		read -r -p "> " -e -i "$(hostname -I | cut -f1 -d' ')" docker_host_ip;
 
 		echo "The host name of docker host to bind with 'docker run --add-host='.";
-		read -r -p "> " -e -i "docker_host" misskey_localhost;
+		read -r -p "> " -e -i "docker_host" sharkey_localhost;
 		;;
 	*)
 		echo "Use Systemd.";
@@ -110,47 +110,47 @@ esac
 #endregion
 
 if [ $method == "docker" ]; then
-	echo "Do you use image from Docker Hub?:";
-	echo "Y = To use Docker Hub image / N = To build Docker image in this machine"
+	echo "Do you use the image from GitHub Container Registry?:";
+	echo "Y = To use GitHub Container Registry image / N = To build Docker image on this machine"
 	read -r -p "[Y/n] > " yn
 	case "$yn" in
 		[Nn]|[Nn][Oo])
-			echo "Build docker image (local/misskey:latest).";
+			echo "Build docker image (local/sharkey:latest).";
 			method=docker;
-			docker_repository="local/misskey:latest"
+			docker_repository="local/sharkey:latest"
 			;;
 		*)
-			echo "Use Docker Hub image.";
+			echo "Use GitHub Container Registry image.";
 			method=docker_hub;
-			echo "Enter repository:tag of Docker Hub image:"
-			read -r -p "> " -e -i "misskey/misskey:latest" docker_repository;
+			echo "Enter repository:tag of GitHub Container Registry image:"
+			read -r -p "> " -e -i "ghcr.io/sharkey/sharkey:stable" docker_repository;
 			;;
 	esac
 fi
 
 tput setaf 3;
-echo "Misskey setting";
+echo "Sharkey setting";
 tput setaf 7;
-misskey_directory=misskey
+misskey_directory=sharkey
 
 if [ $method != "docker_hub" ]; then
 	echo "Repository url where you want to install:"
-	read -r -p "> " -e -i "https://github.com/misskey-dev/misskey.git" repository;
+	read -r -p "> " -e -i "https://github.com/transfem-org/sharkey.git" repository;
 	echo "The name of a new directory to clone:"
-	read -r -p "> " -e -i "misskey" misskey_directory;
+	read -r -p "> " -e -i "sharkey" misskey_directory;
 	echo "Branch or Tag"
-	read -r -p "> " -e -i "master" branch;
+	read -r -p "> " -e -i "stable" branch;
 fi
 
 tput setaf 3;
 echo "";
-echo "Enter the name of user with which you want to execute Misskey:";
+echo "Enter the name of user with which you want to execute Sharkey:";
 tput setaf 7;
-read -r -p "> " -e -i "misskey" misskey_user;
+read -r -p "> " -e -i "sharkey" misskey_user;
 
 tput setaf 3;
 echo "";
-echo "Enter host where you want to install Misskey:";
+echo "Enter host where you want to install Sharkey:";
 tput setaf 7;
 read -r -p "> " -e -i "example.com" host;
 tput setaf 7;
@@ -172,7 +172,7 @@ case "$yn" in
 		cloudflare=false;
 		certbot=false;
 
-		echo "Misskey port: ";
+		echo "Sharkey port: ";
 		read -r -p "> " -e -i "3000" misskey_port;
 		;;
 	*)
@@ -274,8 +274,8 @@ case "$yn" in
 				;;
 			esac
 
-		echo "Tell me which port Misskey will watch: ";
-		echo "Misskey port: ";
+		echo "Tell me which port Sharkey will watch: ";
+		echo "Sharkey port: ";
 		read -r -p "> " -e -i "3000" misskey_port;
 		;;
 esac
@@ -309,11 +309,11 @@ case "$yn" in
 esac
 
 echo "Database user name: ";
-read -r -p "> " -e -i "misskey" db_user;
+read -r -p "> " -e -i "sharkey" db_user;
 echo "Database user password: ";
 read -r -p "> " db_pass;
 echo "Database name:";
-read -r -p "> " -e -i "mk1" db_name;
+read -r -p "> " -e -i "sk1" db_name;
 #endregion
 
 #region redis
@@ -387,7 +387,7 @@ else
 fi
 
 tput setaf 3;
-echo "Process: add misskey user ($misskey_user);";
+echo "Process: add sharkey user ($misskey_user);";
 tput setaf 7;
 if cut -d: -f1 /etc/passwd | grep -q -x "$misskey_user"; then
 	echo "$misskey_user exists already. No user will be created.";
@@ -609,8 +609,8 @@ echo "Process: create nginx config;"
 tput setaf 7;
 
 cat > "/etc/nginx/conf.d/$host.conf" << NGEOF
-# nginx configuration for Misskey
-# Created by joinmisskey/bash-install v$version
+# nginx configuration for Sharkey
+# Created by transfem-org/bash-install v$version
 
 # For WebSocket
 map \$http_upgrade \$connection_upgrade {
@@ -850,7 +850,7 @@ tput setaf 7;
 NODE_ENV=production pnpm install --frozen-lockfile;
 
 tput setaf 3;
-echo "Process: build misskey;"
+echo "Process: build Sharkey;"
 tput setaf 7;
 NODE_OPTIONS=--max_old_space_size=3072 NODE_ENV=production pnpm run build;
 
@@ -860,7 +860,7 @@ tput setaf 7;
 NODE_OPTIONS=--max_old_space_size=3072 pnpm run init;
 
 tput setaf 3;
-echo "Check: If Misskey starts correctly;"
+echo "Check: If Sharkey starts correctly;"
 tput setaf 7;
 if NODE_ENV=production timeout 40 npm start 2> /dev/null | grep -q "Now listening on port"; then
 	echo "	OK.";
@@ -872,7 +872,7 @@ MKEOF
 #endregion
 
 tput setaf 3;
-echo "Process: create misskey daemon;"
+echo "Process: create Sharkey daemon;"
 tput setaf 7;
 cat > "/etc/systemd/system/$host.service" << _EOF
 [Unit]
@@ -916,7 +916,7 @@ echo "";
 if [ $method != "systemd" ]; then
 tput setaf 2;
 tput bold;
-echo "ALL MISSKEY INSTALLATION PROCESSES ARE COMPLETE!";
+echo "ALL SHARKEY INSTALLATION PROCESSES ARE COMPLETE!";
 echo "Now all we need to do is run docker run."
 tput setaf 7;
 echo "Watch the screen."
@@ -924,7 +924,7 @@ echo "When it shows \"Now listening on port $misskey_port on https://$host\","
 echo "press Ctrl+C to exit logs and jump to https://$host/ and continue setting up your instance.";
 echo ""
 echo "This script version is v$version.";
-echo "Please follow @joinmisskey@misskey.io to address bugs and updates.";
+echo "Please follow @sharkey@transfem.social to address bugs and updates.";
 echo ""
 read -r -p "Press Enter key to execute docker run> ";
 echo ""
@@ -977,9 +977,9 @@ MKEOF
 
 tput setaf 2;
 tput bold;
-echo "ALL MISSKEY INSTALLATION PROCESSES ARE COMPLETE!";
+echo "ALL SHARKEY INSTALLATION PROCESSES ARE COMPLETE!";
 echo "Jump to https://$host/ and continue setting up your instance.";
 tput setaf 7;
 echo "This script version is v$version.";
-echo "Please follow @joinmisskey@misskey.io to address bugs and updates.";
+echo "Please follow @sharkey@transfem.social to address bugs and updates.";
 fi
